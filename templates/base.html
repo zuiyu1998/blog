@@ -1,0 +1,75 @@
+{% load static %}
+{% load tags %}
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="{% static 'css/semantic.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/mystyle.css' %}">
+    <title>{{ title }}</title>
+</head>
+<body>
+    <div class="ui container">
+        <!-- 导航栏 -->
+        <div class="nav ui eight column ">
+            <div class="ui compact menu">
+                {% for big_topic in big_topic_list %}
+
+                    {% get_list_by_big_topic big_topic.id as topic_list %}
+
+                    {% if topic_list %}
+                        <div class="ui simple dropdown item">
+                            {{ big_topic }}
+                            <i class="dropdown icon"></i>
+                            <div class="menu">
+                                {% for topic in topic_list %}
+                                    <div class="item"><a href="{% url 'topic' topic %}">{{ topic }}</a></div>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+
+                    {% else %}
+                        <div class="item">
+                            <a href="{% url 'index' %}">{{ big_topic }}</a>
+                        </div>
+                    {% endif %}
+
+                {% endfor %}
+
+            </div>
+        </div>
+
+        <div class="ui divider">
+
+        </div>
+        <!-- 博文页面 -->
+        <div class="ui four width link cards">
+            {% for article in article_list %}
+                    <div class="card">
+                    <div class="image">
+                      <img src="{% static 'image/bird.jpg' %}">
+                    </div>
+                    <div class="content">
+                      <div class="header">{{ article.title }}</div>
+                      <div class="meta">
+                        <span class="date">{{ article.topic }}</span>
+                      </div>
+                      <div class="description">{{ article.content | slice:':20' }}</div>
+                    </div>
+                    <div class="extra content">
+                      <span class="right floated">{{ article.create_date }} </span>
+                      <span><i class="user icon"></i> {{ article.author }} </span>
+                    </div>
+                  </div>
+            {% endfor %}
+
+          </div>
+    </div>
+
+    <script src="{% static 'js/jquery.js' %}"></script>
+    <script src="{% static 'js/semantic.min.js' %}"></script>
+</body>
+</html>
